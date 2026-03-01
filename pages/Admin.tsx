@@ -154,6 +154,18 @@ export const Admin: React.FC = () => {
     window.location.hash = activeTab;
   }, [activeTab]);
 
+  // Listen to browser back/forward
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '') as typeof activeTab;
+      if (hash && ['dashboard', 'properties', 'leads', 'enquiries', 'agents', 'blogs', 'settings', 'customers'].includes(hash)) {
+        setActiveTab(hash);
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   // Fetch data on authentication
   useEffect(() => {
     if (isAuthenticated) {
