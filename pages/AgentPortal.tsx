@@ -133,30 +133,30 @@ export const AgentPortal: React.FC = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans">
+    <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row font-sans">
       {/* Sidebar */}
-      <div className="w-64 bg-slate-900 text-white p-6 fixed h-full z-10">
+      <div className="lg:w-64 bg-slate-900 text-white p-6 lg:fixed lg:h-full z-10">
         <div className="flex items-center gap-2 mb-10">
           <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center font-bold">A</div>
           <h2 className="text-xl font-heading font-bold">Agent Portal</h2>
         </div>
         
-        <nav className="flex-1 space-y-2">
+        <nav className="flex lg:flex-col flex-row gap-2">
           <button
             onClick={() => setActiveTab('leads')}
-            className={`w-full flex items-center p-3 rounded-xl transition mb-1 font-medium ${activeTab === 'leads' ? 'bg-brand-primary text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start p-3 rounded-xl transition mb-1 font-medium ${activeTab === 'leads' ? 'bg-brand-primary text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
           >
-            <Users size={20} className="mr-3" /> My Leads
+            <Users size={20} className="lg:mr-3" /> <span className="hidden lg:inline">My Leads</span>
           </button>
           <button
             onClick={() => setActiveTab('profile')}
-            className={`w-full flex items-center p-3 rounded-xl transition mb-1 font-medium ${activeTab === 'profile' ? 'bg-brand-primary text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
+            className={`flex-1 lg:w-full flex items-center justify-center lg:justify-start p-3 rounded-xl transition mb-1 font-medium ${activeTab === 'profile' ? 'bg-brand-primary text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
           >
-            <User size={20} className="mr-3" /> Profile
+            <User size={20} className="lg:mr-3" /> <span className="hidden lg:inline">Profile</span>
           </button>
         </nav>
         
-        <div className="mt-auto pt-6 border-t border-slate-800">
+        <div className="hidden lg:block mt-auto pt-6 border-t border-slate-800">
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 w-full p-2 rounded-xl hover:bg-slate-800 transition text-left group"
@@ -174,11 +174,11 @@ export const AgentPortal: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 ml-64 p-8">
+      <div className="flex-1 lg:ml-64 p-4 sm:p-8">
         {/* LEADS TAB */}
         {activeTab === 'leads' && (
           <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <h1 className="text-2xl font-heading font-bold text-slate-900">My Leads</h1>
                 <p className="text-slate-500 text-sm">Manage your assigned leads</p>
@@ -189,7 +189,7 @@ export const AgentPortal: React.FC = () => {
                   setEditLeadId(null);
                   setLeadForm({ name: '', email: '', phone: '', message: '', status: 'New' });
                 }}
-                className="bg-brand-primary text-white px-5 py-2.5 rounded-xl font-bold hover:bg-blue-700 flex items-center shadow-lg"
+                className="bg-brand-primary text-white px-5 py-2.5 rounded-xl font-bold hover:bg-blue-700 flex items-center shadow-lg w-full sm:w-auto justify-center"
               >
                 {isAddingLead ? <X size={20} className="mr-2" /> : <Plus size={20} className="mr-2" />}
                 {isAddingLead ? 'Cancel' : 'Add Lead'}
@@ -273,15 +273,15 @@ export const AgentPortal: React.FC = () => {
               </div>
             )}
 
-            <div className="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden">
-              <table className="w-full text-left">
+            <div className="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-x-auto">
+              <table className="w-full text-left min-w-[640px]">
                 <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-bold">
                   <tr>
-                    <th className="p-5">Name</th>
-                    <th className="p-5">Email</th>
-                    <th className="p-5">Phone</th>
-                    <th className="p-5">Status</th>
-                    <th className="p-5 text-right">Actions</th>
+                    <th className="p-3 sm:p-5">Name</th>
+                    <th className="p-3 sm:p-5">Email</th>
+                    <th className="p-3 sm:p-5">Phone</th>
+                    <th className="p-3 sm:p-5">Status</th>
+                    <th className="p-3 sm:p-5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -292,10 +292,10 @@ export const AgentPortal: React.FC = () => {
                   ) : (
                     leads.map(lead => (
                       <tr key={lead.id} className="hover:bg-slate-50">
-                        <td className="p-5 font-bold text-slate-800 text-sm">{lead.name}</td>
-                        <td className="p-5 text-sm text-slate-600">{lead.email}</td>
-                        <td className="p-5 text-sm text-slate-600">{lead.phone}</td>
-                        <td className="p-5">
+                        <td className="p-3 sm:p-5 font-bold text-slate-800 text-sm">{lead.name}</td>
+                        <td className="p-3 sm:p-5 text-sm text-slate-600">{lead.email}</td>
+                        <td className="p-3 sm:p-5 text-sm text-slate-600">{lead.phone}</td>
+                        <td className="p-3 sm:p-5">
                           <span className={`px-2 py-1 rounded text-xs font-bold ${
                             lead.status === 'New' ? 'bg-blue-100 text-blue-700' :
                             lead.status === 'Contacted' ? 'bg-yellow-100 text-yellow-700' :
@@ -304,7 +304,7 @@ export const AgentPortal: React.FC = () => {
                             {lead.status}
                           </span>
                         </td>
-                        <td className="p-5 text-right">
+                        <td className="p-3 sm:p-5 text-right">
                           <div className="flex justify-end gap-2">
                             <button onClick={() => handleEditLead(lead)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg">
                               <Edit size={16} />
@@ -326,7 +326,7 @@ export const AgentPortal: React.FC = () => {
         {/* PROFILE TAB */}
         {activeTab === 'profile' && (
           <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <h1 className="text-2xl font-heading font-bold text-slate-900">My Profile</h1>
                 <p className="text-slate-500 text-sm">Update your profile information</p>
@@ -334,7 +334,7 @@ export const AgentPortal: React.FC = () => {
               {!isEditingProfile && (
                 <button
                   onClick={() => setIsEditingProfile(true)}
-                  className="bg-brand-primary text-white px-5 py-2.5 rounded-xl font-bold hover:bg-blue-700 flex items-center"
+                  className="bg-brand-primary text-white px-5 py-2.5 rounded-xl font-bold hover:bg-blue-700 flex items-center w-full sm:w-auto justify-center"
                 >
                   <Edit size={20} className="mr-2" /> Edit Profile
                 </button>

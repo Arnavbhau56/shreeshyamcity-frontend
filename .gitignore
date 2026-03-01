@@ -1,7 +1,4 @@
 # Environment variables
-.env
-.env.local
-.env.production
 
 # Dependencies
 node_modules/
@@ -22,3 +19,4 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+config.bat
