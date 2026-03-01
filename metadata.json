@@ -1,0 +1,7 @@
+{
+  "name": "Shree Shyam City Real Estate",
+  "description": "Premium real estate portal for Dhanbad and Jharkhand featuring property listings and admin management.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

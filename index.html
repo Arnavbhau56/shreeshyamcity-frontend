@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shree Shyam City | Premium Plots, Villas & Apartments in Dhanbad</title>
+    <meta name="title" content="Premium Plots, Villas & Apartments in Dhanbad | Shree Shyam City">
+    <meta name="description" content="Shree Shyam City is a Dhanbad-based premium real estate company offering residential plots, luxury villas, and modern apartments in prime locations. Invest in your dream property today.">
+    <meta name="keywords" content="Dhanbad real estate, premium plots in Dhanbad, villas in Dhanbad, apartments in Dhanbad, property in Dhanbad, real estate Jharkhand, luxury homes Dhanbad">
+    <meta name="author" content="Shree Shyam City">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" type="image/x-icon" href="./src/assets/img/ico.png">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX'); // Replace with your GA4 Measurement ID
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              heading: ['Outfit', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                primary: '#540D6E', // Purple
+                secondary: '#00BBF9', // Bright Blue
+                accent: '#0EAD69', // Green
+                gray: '#A3A3A3', // Gray
+                dark: '#0F172A', // Slate 900 (Keeping for layout structure)
+                light: '#F8FAFC', // Slate 50 (Keeping for layout structure)
+              }
+            },
+            boxShadow: {
+              'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+              'glow': '0 0 20px rgba(84, 13, 110, 0.2)', // Matches new primary purple
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+      h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+      
+      /* Smooth scrolling */
+      html { scroll-behavior: smooth; }
+      
+      /* Hide scrollbar for clean UI in some containers */
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      .glass {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
+    "recharts": "https://esm.sh/recharts@^3.7.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+<link rel="stylesheet" href="/src/assets/css/ss-city.css">
+</head>
+  <body class="text-slate-800 antialiased selection:bg-brand-primary selection:text-white">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
