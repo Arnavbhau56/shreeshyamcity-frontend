@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link, useNavigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { WhatsAppFloat } from './components/WhatsAppFloat';
 import { Home } from './pages/Home';
 import { Listing } from './pages/Listing';
 import { PropertyDetails } from './pages/PropertyDetails';
@@ -362,10 +363,11 @@ const Contact = () => (
                                 <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-primary shadow-sm mr-4">
                                     <Phone size={20} />
                                 </div>
+
                                 <div>
-                                    <p className="font-bold text-slate-800">Phone</p>
-                                    <p className="text-slate-600 text-sm mt-1">+91 98765 43210</p>
-                                </div>
+    <p className="font-bold text-slate-800">Phone</p>
+    <p className="text-slate-600 text-sm mt-1">+91 919876543210</p>
+</div>                                
                             </div>
                             <div className="flex items-start">
                                 <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-primary shadow-sm mr-4">
@@ -732,6 +734,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 {children}
             </main>
             {!isAdmin && <Footer />}
+            {!isAdmin && <WhatsAppFloat />}
         </div>
     );
 }
