@@ -529,7 +529,7 @@ export const Admin: React.FC = () => {
                 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 group hover:border-blue-200 transition">
+                    <div onClick={() => setActiveTab('properties')} className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 group hover:border-blue-200 transition cursor-pointer">
                         <div className="flex justify-between items-start mb-4">
                             <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition"><Home size={24} /></div>
                             {analytics.stats.properties.growth !== 0 && (
@@ -541,7 +541,7 @@ export const Admin: React.FC = () => {
                         <div className="text-slate-500 text-sm font-medium">Total Properties</div>
                         <div className="text-3xl font-bold text-slate-900">{analytics.stats.properties.count}</div>
                     </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 group hover:border-orange-200 transition">
+                    <div onClick={() => setActiveTab('leads')} className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 group hover:border-orange-200 transition cursor-pointer">
                         <div className="flex justify-between items-start mb-4">
                             <div className="p-3 bg-orange-50 text-orange-600 rounded-xl group-hover:bg-orange-600 group-hover:text-white transition"><Users size={24} /></div>
                             {analytics.stats.leads.growth !== 0 && (
@@ -552,8 +552,11 @@ export const Admin: React.FC = () => {
                         </div>
                         <div className="text-slate-500 text-sm font-medium">Total Leads</div>
                         <div className="text-3xl font-bold text-slate-900">{analytics.stats.leads.count}</div>
+                        {analytics.stats.leads.pending > 0 && (
+                            <div className="text-xs text-orange-600 font-medium mt-1">{analytics.stats.leads.pending} pending</div>
+                        )}
                     </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 group hover:border-purple-200 transition">
+                    <div onClick={() => setActiveTab('enquiries')} className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 group hover:border-purple-200 transition cursor-pointer">
                         <div className="flex justify-between items-start mb-4">
                             <div className="p-3 bg-purple-50 text-purple-600 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition"><MessageSquare size={24} /></div>
                             {analytics.stats.enquiries.pending > 0 && (
@@ -565,7 +568,7 @@ export const Admin: React.FC = () => {
                         <div className="text-slate-500 text-sm font-medium">Active Enquiries</div>
                         <div className="text-3xl font-bold text-slate-900">{analytics.stats.enquiries.count}</div>
                     </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 group hover:border-green-200 transition">
+                    <div onClick={() => setActiveTab('blogs')} className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 group hover:border-green-200 transition cursor-pointer">
                         <div className="flex justify-between items-start mb-4">
                             <div className="p-3 bg-green-50 text-green-600 rounded-xl group-hover:bg-green-600 group-hover:text-white transition"><FileText size={24} /></div>
                         </div>
