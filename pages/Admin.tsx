@@ -141,6 +141,19 @@ export const Admin: React.FC = () => {
     }
   }, [navigate]);
 
+  // Sync active tab with URL hash
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '') as typeof activeTab;
+    if (hash && ['dashboard', 'properties', 'leads', 'enquiries', 'agents', 'blogs', 'settings', 'customers'].includes(hash)) {
+      setActiveTab(hash);
+    }
+  }, []);
+
+  // Update URL hash when tab changes
+  useEffect(() => {
+    window.location.hash = activeTab;
+  }, [activeTab]);
+
   // Fetch data on authentication
   useEffect(() => {
     if (isAuthenticated) {
