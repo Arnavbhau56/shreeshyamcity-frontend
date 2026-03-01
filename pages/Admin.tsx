@@ -12,7 +12,7 @@ import {
   LayoutDashboard, Home, Users, Plus, Trash2, Edit, Image as ImageIcon, 
   Video, FileText, Settings, Download, Search, Mail, Phone, MessageSquare, 
   UserCheck, Bell, Save, UploadCloud, X, ChevronLeft, ChevronRight, CheckSquare, Square,
-  Tag, LogOut, MapPin, PlayCircle, User, Clock, CheckCircle
+  Tag, LogOut, MapPin, PlayCircle, User, Clock, CheckCircle, Menu
 } from 'lucide-react';
 import { LOCATIONS, SUGGESTED_AMENITIES } from '../constants';
 import { Property, ListingType, PropertyType, PropertyStatus, Landmark } from '../types';
@@ -111,6 +111,9 @@ export const Admin: React.FC = () => {
 
   // Logout State
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  // Mobile menu state
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   // Lead CRUD State
   const [isAddingLead, setIsAddingLead] = useState(false);
@@ -453,7 +456,10 @@ export const Admin: React.FC = () => {
 
   const SidebarItem = ({ id, icon: Icon, label }: { id: typeof activeTab, icon: any, label: string }) => (
     <button 
-        onClick={() => setActiveTab(id)}
+        onClick={() => {
+          setActiveTab(id);
+          setShowMobileMenu(false);
+        }}
         className={`w-full flex items-center p-3 rounded-xl transition mb-1 font-medium ${activeTab === id ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/30' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
     >
         <Icon size={20} className="mr-3" /> {label}
@@ -511,8 +517,72 @@ export const Admin: React.FC = () => {
         </div>
       </div>
 
+      {/* Mobile Menu Overlay */}
+      {showMobileMenu && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden" onClick={() => setShowMobileMenu(false)}>
+          <div className="w-64 bg-slate-900 text-white p-6 h-full overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-10">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center font-bold font-heading">SC</div>
+                <h2 className="text-xl font-heading font-bold">Admin Panel</h2>
+              </div>
+              <button onClick={() => setShowMobileMenu(false)} className="p-2 hover:bg-slate-800 rounded-lg">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <nav className="flex-1 space-y-2">
+                {userRole === 'admin' && <SidebarItem id="dashboard" icon={LayoutDashboard} label="Dashboard" />}
+                {userRole === 'admin' && (
+                  <>
+                    <SidebarItem id="properties" icon={Home} label="Properties" />
+                    <SidebarItem id="customers" icon={User} label="Customers" />
+                  </>
+                )}
+                <SidebarItem id="leads" icon={Users} label="Leads" />
+                {userRole === 'admin' && (
+                  <>
+                    <SidebarItem id="enquiries" icon={MessageSquare} label="Enquiries" />
+                    <SidebarItem id="agents" icon={UserCheck} label="Agents" />
+                    <SidebarItem id="blogs" icon={FileText} label="Blogs" />
+                    <SidebarItem id="settings" icon={Settings} label="Settings" />
+                  </>
+                )}
+            </nav>
+            
+            <div className="mt-auto pt-6 border-t border-slate-800">
+                <button 
+                    onClick={() => { setShowLogoutConfirm(true); setShowMobileMenu(false); }}
+                    className="flex items-center gap-3 w-full p-2 rounded-xl hover:bg-slate-800 transition text-left group"
+                >
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" className="w-10 h-10 rounded-full border-2 border-slate-700" alt="Admin" />
+                    <div className="flex-1">
+                        <div className="text-sm font-bold group-hover:text-white text-slate-200">Admin User</div>
+                        <div className="text-xs text-slate-500">Super Admin</div>
+                    </div>
+                    <LogOut size={18} className="text-slate-500 group-hover:text-red-400 transition-colors" />
+                </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
-      <div className="flex-1 md:ml-64 p-8">
+      <div className="flex-1 md:ml-64 p-4 md:p-8">
+        
+        {/* Mobile Header */}
+        <div className="md:hidden flex items-center justify-between mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+          <button onClick={() => setShowMobileMenu(true)} className="p-2 hover:bg-slate-100 rounded-lg transition">
+            <Menu size={24} className="text-slate-700" />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-brand-primary rounded-lg flex items-center justify-center font-bold text-white text-xs">SC</div>
+            <h2 className="font-heading font-bold text-slate-900">Admin Panel</h2>
+          </div>
+          <button onClick={() => setShowLogoutConfirm(true)} className="p-2 hover:bg-slate-100 rounded-lg transition">
+            <LogOut size={20} className="text-slate-700" />
+          </button>
+        </div>
         
         {/* DASHBOARD */}
         {activeTab === 'dashboard' && userRole === 'admin' && (
@@ -1062,7 +1132,8 @@ export const Admin: React.FC = () => {
 
                 {/* Properties Table */}
                 <div className="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden">
-                    <div className="overflow-x-auto">
+                    {/* Desktop Table View */}
+                    <div className="hidden lg:block overflow-x-auto">
                         <table className="w-full text-left">
                             <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-bold">
                                 <tr>
@@ -1114,6 +1185,36 @@ export const Admin: React.FC = () => {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="lg:hidden divide-y divide-slate-100">
+                        {currentProperties.map(p => (
+                            <div key={p.id} className="p-4 hover:bg-slate-50 transition">
+                                <div className="flex gap-3 mb-3">
+                                    {p.images && p.images[0] && <img src={p.images[0]} className="w-20 h-20 rounded-lg object-cover flex-shrink-0" alt="thumb" />}
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="font-bold text-slate-800 text-sm mb-1 truncate">{p.title}</h3>
+                                        <p className="text-xs text-slate-500 mb-2">{p.type} • {p.area} sqft • {p.location}</p>
+                                        <div className="flex flex-wrap gap-1 mb-2">
+                                            {p.featured && <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-[10px] font-bold">Featured</span>}
+                                            {p.prime_commercial && <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">Commercial</span>}
+                                            {p.new_launch && <span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-[10px] font-bold">New</span>}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                                    <div>
+                                        <div className="text-lg font-bold text-slate-800">₹{p.price} L</div>
+                                        <div className="text-xs text-slate-500">{p.agent_details ? p.agent_details.name : 'Unassigned'}</div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => handleEditProperty(p)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"><Edit size={18} /></button>
+                                        <button onClick={() => handleDeleteProperty(p.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"><Trash2 size={18} /></button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                     
                     {/* Pagination */}
@@ -1168,52 +1269,80 @@ export const Admin: React.FC = () => {
                 </div>
 
                 <div className="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden">
-                    <table className="w-full text-left">
-                        <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-bold">
-                            <tr>
-                                <th className="p-5">From</th>
-                                <th className="p-5">Property Interest</th>
-                                <th className="p-5">Message</th>
-                                <th className="p-5">Date</th>
-                                <th className="p-5 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100">
-                            {enquiries.map(enq => (
-                                <tr key={enq.id} className={`hover:bg-slate-50 transition ${enq.status === 'Unread' ? 'bg-blue-50/50' : ''}`}>
-                                    <td className="p-5 font-bold text-slate-800 text-sm">{enq.name}</td>
-                                    <td className="p-5 text-sm text-brand-primary font-medium">{enq.property}</td>
-                                    <td className="p-5 text-sm text-slate-600 max-w-xs truncate">{enq.message}</td>
-                                    <td className="p-5 text-sm text-slate-500">{enq.date}</td>
-                                    <td className="p-5 text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <button 
-                                                onClick={() => handleSendEnquiryEmail(enq)}
-                                                className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition" 
-                                                title="Send Email"
-                                            >
-                                                <Mail size={16} />
-                                            </button>
-                                            <button 
-                                                onClick={() => handleResolveEnquiry(enq.id)}
-                                                className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition" 
-                                                title="Mark as Resolved"
-                                            >
-                                                <CheckCircle size={16} />
-                                            </button>
-                                            <button 
-                                                onClick={() => handleDeleteEnquiry(enq.id)}
-                                                className="p-2 text-red-500 hover:bg-red-100 rounded-lg transition" 
-                                                title="Delete"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </td>
+                    {/* Desktop Table */}
+                    <div className="hidden md:block overflow-x-auto">
+                        <table className="w-full text-left">
+                            <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-bold">
+                                <tr>
+                                    <th className="p-5">From</th>
+                                    <th className="p-5">Property Interest</th>
+                                    <th className="p-5">Message</th>
+                                    <th className="p-5">Date</th>
+                                    <th className="p-5 text-right">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100">
+                                {enquiries.map(enq => (
+                                    <tr key={enq.id} className={`hover:bg-slate-50 transition ${enq.status === 'Unread' ? 'bg-blue-50/50' : ''}`}>
+                                        <td className="p-5 font-bold text-slate-800 text-sm">{enq.name}</td>
+                                        <td className="p-5 text-sm text-brand-primary font-medium">{enq.property}</td>
+                                        <td className="p-5 text-sm text-slate-600 max-w-xs truncate">{enq.message}</td>
+                                        <td className="p-5 text-sm text-slate-500">{enq.date}</td>
+                                        <td className="p-5 text-right">
+                                            <div className="flex justify-end gap-2">
+                                                <button 
+                                                    onClick={() => handleSendEnquiryEmail(enq)}
+                                                    className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition" 
+                                                    title="Send Email"
+                                                >
+                                                    <Mail size={16} />
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleResolveEnquiry(enq.id)}
+                                                    className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition" 
+                                                    title="Mark as Resolved"
+                                                >
+                                                    <CheckCircle size={16} />
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleDeleteEnquiry(enq.id)}
+                                                    className="p-2 text-red-500 hover:bg-red-100 rounded-lg transition" 
+                                                    title="Delete"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden divide-y divide-slate-100">
+                        {enquiries.map(enq => (
+                            <div key={enq.id} className={`p-4 ${enq.status === 'Unread' ? 'bg-blue-50/50' : ''}`}>
+                                <div className="flex justify-between items-start mb-2">
+                                    <div className="font-bold text-slate-800 text-sm">{enq.name}</div>
+                                    <div className="text-xs text-slate-500">{enq.date}</div>
+                                </div>
+                                <div className="text-sm text-brand-primary font-medium mb-2">{enq.property}</div>
+                                <div className="text-sm text-slate-600 mb-3">{enq.message}</div>
+                                <div className="flex gap-2">
+                                    <button onClick={() => handleSendEnquiryEmail(enq)} className="flex-1 p-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition text-sm font-medium">
+                                        <Mail size={14} className="inline mr-1" /> Email
+                                    </button>
+                                    <button onClick={() => handleResolveEnquiry(enq.id)} className="flex-1 p-2 text-green-600 bg-green-50 hover:bg-green-100 rounded-lg transition text-sm font-medium">
+                                        <CheckCircle size={14} className="inline mr-1" /> Resolve
+                                    </button>
+                                    <button onClick={() => handleDeleteEnquiry(enq.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition">
+                                        <Trash2 size={16} />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         )}

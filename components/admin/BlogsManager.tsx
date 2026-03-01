@@ -171,7 +171,7 @@ export const BlogsManager: React.FC<BlogsManagerProps> = ({ blogs, onUpdate }) =
 
     return (
         <div className="space-y-6 animate-in fade-in duration-300">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-heading font-bold text-slate-900">Blog Management</h1>
                     <p className="text-slate-500 text-sm">Manage insights, trends, and area guides.</p>
@@ -182,7 +182,7 @@ export const BlogsManager: React.FC<BlogsManagerProps> = ({ blogs, onUpdate }) =
                         setEditId(null);
                         setFormData(INITIAL_FORM);
                     }}
-                    className="bg-brand-primary text-white px-5 py-2.5 rounded-xl font-bold hover:bg-blue-700 transition flex items-center shadow-lg shadow-brand-primary/30"
+                    className="w-full sm:w-auto bg-brand-primary text-white px-5 py-2.5 rounded-xl font-bold hover:bg-blue-700 transition flex items-center justify-center shadow-lg shadow-brand-primary/30"
                 >
                     {isAdding ? <X size={20} className="mr-2" /> : <Plus size={20} className="mr-2" />}
                     {isAdding ? 'Cancel' : 'Add Blog'}
@@ -452,7 +452,8 @@ export const BlogsManager: React.FC<BlogsManagerProps> = ({ blogs, onUpdate }) =
 
             {/* Blogs List */}
             <div className="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-bold">
                             <tr>
@@ -503,6 +504,33 @@ export const BlogsManager: React.FC<BlogsManagerProps> = ({ blogs, onUpdate }) =
                             ))}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="md:hidden divide-y divide-slate-100">
+                    {blogs.map(blog => (
+                        <div key={blog.id} className="p-4">
+                            <div className="flex gap-3 mb-3">
+                                <img src={blog.image} className="w-20 h-20 rounded-lg object-cover flex-shrink-0" alt="blog" />
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-bold text-slate-800 text-sm mb-1 line-clamp-2">{blog.title}</h3>
+                                    <p className="text-xs text-slate-500 line-clamp-2 mb-2">{blog.short_description}</p>
+                                    <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full bg-slate-100 text-slate-700">
+                                        {getCategoryIcon(blog.category)}
+                                        {getCategoryLabel(blog.category)}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 pt-3 border-t border-slate-100">
+                                <button onClick={() => handleEdit(blog)} className="flex-1 p-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition text-sm font-medium">
+                                    <Edit size={14} className="inline mr-1" /> Edit
+                                </button>
+                                <button onClick={() => handleDelete(blog.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition">
+                                    <Trash2 size={16} />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
